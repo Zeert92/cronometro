@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronómetro de Días</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Cronómetro de Días</h1>
+    <div id="cronometro">
+        <span id="dias">0</span>d 
+        <span id="horas">0</span>h 
+        <span id="minutos">0</span>m 
+        <span id="segundos">0</span>s
+    </div>
+    <input type="number" id="inputDias" placeholder="Ingrese días">
+    <button onclick="iniciarCronometro()">Iniciar Cronómetro</button>
+    <script>
+        let countDownDate;
+let timer;
+
+function iniciarCronometro() {
+    const dias = parseInt(document.getElementById('inputDias').value);
+    if (isNaN(dias) || dias <= 0) {
+        alert("Por favor, ingrese un número válido de días.");
+        return;
+    }
+
+    clearInterval(timer); // Limpiar cualquier cronómetro previo
+
+    const ahora = new Date().getTime();
+    countDownDate = new Date(ahora + dias * 24 * 60 * 60 * 1000).getTime();
+
+    timer = setInterval(actualizarCronometro, 1000);
+}
+
+function actualizarCronometro() {
+    const ahora = new Date().getTime();
+    const distancia = countDownDate - ahora;
+
+    const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+    const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+
+    document.getElementById('dias').innerText = dias;
+    document.getElementById('horas').innerText = horas;
+    document.getElementById('minutos').innerText = minutos;
+    document.getElementById('segundos').innerText = segundos;
+
+    if (distancia < 0) {
+        clearInterval(timer);
+        document.getElementById('cronometro').innerText = "¡El tiempo ha terminado!";
+    }
+}
+    </script>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+}
+
+#cronometro {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+input, button {
+    font-size: 1em;
+    padding: 10px;
+    margin: 5px;
+}
+
+    </style>
+</body>
+</html>
